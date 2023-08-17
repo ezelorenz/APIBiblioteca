@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\DELL\\Documents\\BibliotecaBitwise\\BibliotecaBitwise\\BibliotecaBitwise.csproj": {}
+    "C:\\Users\\DELL\\Documents\\BibliotecaBitwise-Prueba\\BibliotecaBitwise\\BibliotecaBitwise.csproj": {}
   },
   "projects": {
-    "C:\\Users\\DELL\\Documents\\BibliotecaBitwise\\BibliotecaBitwise\\BibliotecaBitwise.csproj": {
+    "C:\\Users\\DELL\\Documents\\BibliotecaBitwise-Prueba\\BibliotecaBitwise\\BibliotecaBitwise.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\DELL\\Documents\\BibliotecaBitwise\\BibliotecaBitwise\\BibliotecaBitwise.csproj",
+        "projectUniqueName": "C:\\Users\\DELL\\Documents\\BibliotecaBitwise-Prueba\\BibliotecaBitwise\\BibliotecaBitwise.csproj",
         "projectName": "BibliotecaBitwise",
-        "projectPath": "C:\\Users\\DELL\\Documents\\BibliotecaBitwise\\BibliotecaBitwise\\BibliotecaBitwise.csproj",
+        "projectPath": "C:\\Users\\DELL\\Documents\\BibliotecaBitwise-Prueba\\BibliotecaBitwise\\BibliotecaBitwise.csproj",
         "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\DELL\\Documents\\BibliotecaBitwise\\BibliotecaBitwise\\obj\\",
+        "outputPath": "C:\\Users\\DELL\\Documents\\BibliotecaBitwise-Prueba\\BibliotecaBitwise\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -45,6 +45,10 @@
               "target": "Package",
               "version": "[12.0.1, )"
             },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[7.0.10, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[7.0.7, )"
@@ -66,6 +70,10 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.5.0, )"
+            },
+            "XAct.Core.PCL": {
+              "target": "Package",
+              "version": "[0.0.5014, )"
             }
           },
           "imports": [
