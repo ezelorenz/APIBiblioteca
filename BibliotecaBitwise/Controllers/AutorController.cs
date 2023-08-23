@@ -2,11 +2,13 @@
 using BibliotecaBitwise.DAL.Interfaces;
 using BibliotecaBitwise.DTO;
 using BibliotecaBitwise.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BibliotecaBitwise.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
     public class AutorController : ControllerBase
@@ -27,7 +29,7 @@ namespace BibliotecaBitwise.Controllers
             var autoresDTO = _mapper.Map<IEnumerable<AutorDTO>>(autores);
             return Ok(autoresDTO);
         }
-
+        [Authorize(Roles = "admin")]
         [HttpGet("soloAutores")]
         public async Task<ActionResult<IEnumerable<Autor>>> obtener()
         {

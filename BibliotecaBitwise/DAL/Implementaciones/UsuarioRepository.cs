@@ -36,8 +36,8 @@ namespace BibliotecaBitwise.DAL.Implementaciones
             var passwordEncriptado = ObtenerMD5(usuarioLoginDto.Password);
 
             var usuarioEncontrado = await _context.Usuarios.FirstOrDefaultAsync(
-                                                                u => u.NombreUsuario.ToLower() == usuarioLoginDto.NombreUsuario.ToLower()
-                                                                && u.Password == passwordEncriptado);
+                                                    u => u.NombreUsuario.ToLower() == usuarioLoginDto.NombreUsuario.ToLower()
+                                                    && u.Password == passwordEncriptado);
 
             if (usuarioEncontrado == null)
             {

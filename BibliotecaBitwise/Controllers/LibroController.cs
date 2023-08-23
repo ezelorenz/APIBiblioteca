@@ -36,7 +36,9 @@ namespace BibliotecaBitwise.Controllers
             var libroDto = _mapper.Map<LibroDTO>(libro);
             return Ok(libroDto);
         }
-
+        //[ResponseCache(Duration = 30)]
+        //[ResponseCache(CacheProfileName ="PorDefecto")]
+        [ResponseCache(Location =ResponseCacheLocation.None, NoStore = true)]
         [HttpGet("dataRelacionada/{id}")]
         public async Task<ActionResult<LibroDTO>> ObtenerRelacionada(int id)
         {
