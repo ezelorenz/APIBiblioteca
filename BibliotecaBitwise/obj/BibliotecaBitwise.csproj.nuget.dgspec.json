@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\DELL\\Documents\\BibliotecaBitwise\\BibliotecaBitwise\\BibliotecaBitwise.csproj": {}
+    "C:\\Users\\DELL\\Documents\\BibliotecaBitwise-Prueba\\BibliotecaBitwise\\BibliotecaBitwise.csproj": {}
   },
   "projects": {
-    "C:\\Users\\DELL\\Documents\\BibliotecaBitwise\\BibliotecaBitwise\\BibliotecaBitwise.csproj": {
+    "C:\\Users\\DELL\\Documents\\BibliotecaBitwise-Prueba\\BibliotecaBitwise\\BibliotecaBitwise.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\DELL\\Documents\\BibliotecaBitwise\\BibliotecaBitwise\\BibliotecaBitwise.csproj",
+        "projectUniqueName": "C:\\Users\\DELL\\Documents\\BibliotecaBitwise-Prueba\\BibliotecaBitwise\\BibliotecaBitwise.csproj",
         "projectName": "BibliotecaBitwise",
-        "projectPath": "C:\\Users\\DELL\\Documents\\BibliotecaBitwise\\BibliotecaBitwise\\BibliotecaBitwise.csproj",
+        "projectPath": "C:\\Users\\DELL\\Documents\\BibliotecaBitwise-Prueba\\BibliotecaBitwise\\BibliotecaBitwise.csproj",
         "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\DELL\\Documents\\BibliotecaBitwise\\BibliotecaBitwise\\obj\\",
+        "outputPath": "C:\\Users\\DELL\\Documents\\BibliotecaBitwise-Prueba\\BibliotecaBitwise\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
