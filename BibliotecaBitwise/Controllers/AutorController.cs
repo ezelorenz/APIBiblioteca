@@ -2,6 +2,7 @@
 using BibliotecaBitwise.DAL.Interfaces;
 using BibliotecaBitwise.DTO;
 using BibliotecaBitwise.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,12 +29,16 @@ namespace BibliotecaBitwise.Controllers
             return Ok(autoresDTO);
         }
 
-        [HttpGet("soloAutores")]
-        public async Task<ActionResult<IEnumerable<Autor>>> obtener()
+        [Authorize(Roles = "admin")]
+        [HttpGet("{id}", Name ="GetAutor")]
+        public async Task<ActionResult<AutorDTO>> Obtener(int id)
         {
-            var autores = await _repository.ObtenerTodos();
-            
-            return Ok(autores);
+            var autor = await _repository.Obtener(id);
+            if (autor == null)
+                return NotFound();
+
+            var autorDto = _mapper.Map<AutorDTO>(autor);
+            return Ok(autorDto);
         }
 
         [HttpPost]
@@ -48,7 +53,36 @@ namespace BibliotecaBitwise.Controllers
             }
             var dto = _mapper.Map<AutorDTO>(autor);
 
-            return Ok(dto);
+            return new CreatedAtRouteResult("GetAutor", new { id = autor.Id }, dto);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult>Actualizar(int id, AutorCreacionDTO autorCreacionDTO)
+        {
+            var autorDesdeRepo = await _repository.Obtener(id);
+            if (autorDesdeRepo == null)
+                return NotFound();
+
+            _mapper.Map(autorCreacionDTO, autorDesdeRepo);
+            var resultado = await _repository.Actualizar(autorDesdeRepo);
+            if (resultado)
+                return NoContent();
+
+            return BadRequest();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult>Eliminar(int id)
+        {
+            var autorDesdeRepo = await _repository.Obtener(id);
+            if (autorDesdeRepo == null)
+                return NotFound();
+
+            var resultado = await _repository.Eliminar(id);
+            if (resultado)
+                return NoContent();
+
+            return BadRequest();
         }
     }
 }

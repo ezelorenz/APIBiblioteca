@@ -32,6 +32,8 @@ namespace BibliotecaBitwise.Utilidades
             CreateMap<Genero, GeneroDTO>();
             CreateMap<GeneroCreacionDTO, Genero>();
             CreateMap<ListaComentariosDTO, Comentario>().ReverseMap();
+
+            CreateMap<Usuario, UsuarioDto>().ReverseMap();
         }
     }
 }

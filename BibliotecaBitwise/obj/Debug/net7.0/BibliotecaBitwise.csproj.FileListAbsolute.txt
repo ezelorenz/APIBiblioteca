@@ -77,3 +77,6 @@ C:\Users\DELL\Documents\BibliotecaBitwise\BibliotecaBitwise\obj\Debug\net7.0\ref
 C:\Users\DELL\Documents\BibliotecaBitwise\BibliotecaBitwise\bin\Debug\net7.0\AutoMapper.dll
 C:\Users\DELL\Documents\BibliotecaBitwise\BibliotecaBitwise\bin\Debug\net7.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 C:\Users\DELL\Documents\BibliotecaBitwise\BibliotecaBitwise\bin\Debug\net7.0\Newtonsoft.Json.dll
+C:\Users\DELL\Documents\BibliotecaBitwise\BibliotecaBitwise\bin\Debug\net7.0\Microsoft.Practices.ServiceLocation.dll
+C:\Users\DELL\Documents\BibliotecaBitwise\BibliotecaBitwise\bin\Debug\net7.0\XAct.Core.PCL.dll
+C:\Users\DELL\Documents\BibliotecaBitwise\BibliotecaBitwise\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

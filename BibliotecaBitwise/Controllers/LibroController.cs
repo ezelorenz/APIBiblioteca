@@ -26,6 +26,15 @@ namespace BibliotecaBitwise.Controllers
             _libroRepository = libroRepository;
         }
 
+        [ResponseCache(Duration = 30)]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<LibroDTO>>> ObtenerTodos()
+        {
+            var libros = await _repository.ObtenerTodos();
+            var librosDTO = _mapper.Map<IEnumerable<LibroDTO>>(libros);
+            return Ok(librosDTO);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<LibroDTO>>Obtener(int id)
         {
@@ -37,6 +46,7 @@ namespace BibliotecaBitwise.Controllers
             return Ok(libroDto);
         }
 
+        [ResponseCache(Duration = 30)]
         [HttpGet("dataRelacionada/{id}")]
         public async Task<ActionResult<LibroDTO>> ObtenerRelacionada(int id)
         {
@@ -56,6 +66,35 @@ namespace BibliotecaBitwise.Controllers
 
             var libroDTO = _mapper.Map<LibroDTO>(libro);
             return CreatedAtAction(nameof(Obtener), new { id = libro.Id }, libroDTO);    
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Actualizar(int id, LibroCreacionDTO libroCreacionDTO)
+        {
+            var libroDesdeRepo = await _repository.Obtener(id);
+            if (libroDesdeRepo == null)
+                return NotFound();
+
+            _mapper.Map(libroCreacionDTO, libroDesdeRepo);
+            var resultado = await _repository.Actualizar(libroDesdeRepo);
+            if (resultado)
+                return NoContent();
+
+            return BadRequest();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Eliminar(int id)
+        {
+            var libroDesdeRepo = await _repository.Obtener(id);
+            if (libroDesdeRepo == null)
+                return NotFound();
+
+            var resultado = await _repository.Eliminar(id);
+            if (resultado)
+                return NoContent();
+
+            return BadRequest();
         }
     }
 }
