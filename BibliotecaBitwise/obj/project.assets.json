@@ -4115,11 +4115,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\DELL\\Documents\\BibliotecaBitwise-Prueba\\BibliotecaBitwise\\BibliotecaBitwise.csproj",
+      "projectUniqueName": "C:\\Users\\DELL\\Documents\\BitwiseTraining-Finalizado\\BibliotecaBitwise\\BibliotecaBitwise.csproj",
       "projectName": "BibliotecaBitwise",
-      "projectPath": "C:\\Users\\DELL\\Documents\\BibliotecaBitwise-Prueba\\BibliotecaBitwise\\BibliotecaBitwise.csproj",
+      "projectPath": "C:\\Users\\DELL\\Documents\\BitwiseTraining-Finalizado\\BibliotecaBitwise\\BibliotecaBitwise.csproj",
       "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\DELL\\Documents\\BibliotecaBitwise-Prueba\\BibliotecaBitwise\\obj\\",
+      "outputPath": "C:\\Users\\DELL\\Documents\\BitwiseTraining-Finalizado\\BibliotecaBitwise\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
