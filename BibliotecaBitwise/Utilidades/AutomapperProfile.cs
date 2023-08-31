@@ -34,6 +34,9 @@ namespace BibliotecaBitwise.Utilidades
             CreateMap<ListaComentariosDTO, Comentario>().ReverseMap();
 
             CreateMap<Usuario, UsuarioDto>().ReverseMap();
+
+            CreateMap<AppUsuario, UsuarioDto>().ReverseMap();
+            CreateMap<AppUsuario, UsuarioDatosDto>().ReverseMap();
         }
     }
 }

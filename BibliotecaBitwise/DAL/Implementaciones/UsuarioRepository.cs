@@ -1,7 +1,9 @@
-﻿using BibliotecaBitwise.DAL.DataContext;
+﻿using AutoMapper;
+using BibliotecaBitwise.DAL.DataContext;
 using BibliotecaBitwise.DAL.Interfaces;
 using BibliotecaBitwise.DTO;
 using BibliotecaBitwise.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -15,15 +17,28 @@ namespace BibliotecaBitwise.DAL.Implementaciones
     {
         private readonly ApplicationDbContext _context;
         private string claveSecreta;
-        public UsuarioRepository(ApplicationDbContext context, IConfiguration config) : base(context)
+        private readonly UserManager<AppUsuario> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IMapper _mapper;
+        public UsuarioRepository(ApplicationDbContext context, IConfiguration config
+            ,UserManager<AppUsuario> userManager, RoleManager<IdentityRole> roleManager,
+            IMapper mapper) : base(context)
         {
             _context = context;
             claveSecreta = config.GetValue<string>("ApiSettings:Secreta");
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _mapper = mapper;
+        }
+
+        public async Task<AppUsuario> GetUsuario(string usuarioId)
+        {
+            return await _context.AppUsuarios.FirstOrDefaultAsync(u => u.Id == usuarioId);
         }
 
         public async Task<bool> IsUniqueUser(string usuario)
         {
-            var usuarioDb = await _context.Usuarios.FirstOrDefaultAsync(u => u.NombreUsuario == usuario);
+            var usuarioDb = await _context.AppUsuarios.FirstOrDefaultAsync(u => u.UserName == usuario);
             if (usuarioDb == null)
                 return true;
 
@@ -32,13 +47,14 @@ namespace BibliotecaBitwise.DAL.Implementaciones
 
         public async Task<UsuarioLoginRespuestaDto> Login(UsuarioLoginDto usuarioLoginDto)
         {
-            var passworEncriptado = ObtenerMD5(usuarioLoginDto.Password);
+            //var passworEncriptado = ObtenerMD5(usuarioLoginDto.Password);
 
-            var usuarioEncontrado = await _context.Usuarios.FirstOrDefaultAsync(
-                                            u => u.NombreUsuario.ToLower() == usuarioLoginDto.NombreUsuario.ToLower()
-                                            && u.Password == passworEncriptado);
+            var usuarioEncontrado = await _context.AppUsuarios.FirstOrDefaultAsync(
+                                            u => u.UserName.ToLower() == usuarioLoginDto.NombreUsuario.ToLower());
 
-            if( usuarioEncontrado == null)
+            bool isValid = await _userManager.CheckPasswordAsync(usuarioEncontrado, usuarioLoginDto.Password);
+
+            if( usuarioEncontrado == null || isValid == false)
             {
                 return new UsuarioLoginRespuestaDto()
                 {
@@ -47,6 +63,8 @@ namespace BibliotecaBitwise.DAL.Implementaciones
                 };
             }
 
+            var roles = await _userManager.GetRolesAsync(usuarioEncontrado);
+
             var manejadorToken = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(claveSecreta);
 
@@ -54,8 +72,8 @@ namespace BibliotecaBitwise.DAL.Implementaciones
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, usuarioEncontrado.NombreUsuario.ToString()),
-                    new Claim(ClaimTypes.Role, usuarioEncontrado.Role)
+                    new Claim(ClaimTypes.Name, usuarioEncontrado.UserName.ToString()),
+                    new Claim(ClaimTypes.Role, roles.FirstOrDefault())
                 }),
                 Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -66,42 +84,50 @@ namespace BibliotecaBitwise.DAL.Implementaciones
             UsuarioLoginRespuestaDto usuarioLoginRespuestaDto = new UsuarioLoginRespuestaDto()
             {
                 Token = manejadorToken.WriteToken(token),
-                Usuario = usuarioEncontrado
+                Usuario = _mapper.Map<UsuarioDatosDto>(usuarioEncontrado)
             };
             return usuarioLoginRespuestaDto;
         }
 
-        public async Task<Usuario> Registro(UsuarioRegistroDto usuarioRegistroDto)
+        public async Task<UsuarioDatosDto> Registro(UsuarioRegistroDto usuarioRegistroDto)
         {
-            var passwordEncriptador = ObtenerMD5(usuarioRegistroDto.Password);
+            //var passwordEncriptador = ObtenerMD5(usuarioRegistroDto.Password);
 
-            var usuarioNuevo = new Usuario()
+            var usuarioNuevo = new AppUsuario()
             {
-                NombreUsuario = usuarioRegistroDto.NombreUsuario,
-                Password = passwordEncriptador,
-                Nombre = usuarioRegistroDto.Nombre,
-                Role = usuarioRegistroDto.Role
+                UserName = usuarioRegistroDto.NombreUsuario,
+                Email = usuarioRegistroDto.NombreUsuario,
+                NormalizedEmail = usuarioRegistroDto.NombreUsuario.ToUpper(),
+                Nombre = usuarioRegistroDto.Nombre
             };
 
-            _context.Usuarios.Add(usuarioNuevo);
-            await _context.SaveChangesAsync();
-            usuarioNuevo.Password = passwordEncriptador;
-            return usuarioNuevo;
+            var result = await _userManager.CreateAsync(usuarioNuevo, usuarioRegistroDto.Password);
 
-        }
-
-        public static string ObtenerMD5(string valor)
-        {
-            MD5CryptoServiceProvider x = new MD5CryptoServiceProvider();
-            byte[] data = Encoding.UTF8.GetBytes(valor);
-            data = x.ComputeHash(data);
-            string respuesta = "";
-
-            for(int i =0; i < data.Length; i++)
+            if(result.Succeeded)
             {
-                respuesta += data[i].ToString("x2").ToLower();
+                //Solo la primera vez y es para crear los roles  
+                if (!_roleManager.RoleExistsAsync("admin").GetAwaiter().GetResult())
+                {
+                    await _roleManager.CreateAsync(new IdentityRole("admin"));
+                    await _roleManager.CreateAsync(new IdentityRole("registrado"));
+                }
+
+                await _userManager.AddToRoleAsync(usuarioNuevo, "admin");
+                var usuarioRetornado = await _context.AppUsuarios.FirstOrDefaultAsync(u => u.UserName == usuarioRegistroDto.NombreUsuario);
+
+                //mapeo manual
+                /*return new UsuarioDatosDto()
+                {
+                    Id = usuarioRetornado.Id,
+                    UserName = usuarioRetornado.UserName,
+                    Nombre = usuarioRetornado.Nombre
+                };*/
+
+                return _mapper.Map<UsuarioDatosDto>(usuarioRetornado);
             }
-            return respuesta;
+            return null;
         }
+
+        
     }
 }

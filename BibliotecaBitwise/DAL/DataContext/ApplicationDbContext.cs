@@ -1,9 +1,10 @@
 ﻿using BibliotecaBitwise.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BibliotecaBitwise.DAL.DataContext
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<AppUsuario>
     {
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
@@ -30,5 +31,7 @@ namespace BibliotecaBitwise.DAL.DataContext
         public DbSet<Comentario> Comentarios { get; set; }
         public DbSet<Libro> Libros { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+
+        public DbSet<AppUsuario> AppUsuarios { get; set; }
     }
 }

@@ -1,8 +1,10 @@
 using BibliotecaBitwise.DAL.DataContext;
 using BibliotecaBitwise.DAL.Implementaciones;
 using BibliotecaBitwise.DAL.Interfaces;
+using BibliotecaBitwise.Models;
 using BibliotecaBitwise.Utilidades;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -52,6 +54,9 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddDbContext<ApplicationDbContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("CadenaSQL")));
+
+//Soporte para autenticación con .NET Identity
+builder.Services.AddIdentity<AppUsuario, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddControllers().AddJsonOptions(opt =>
 {

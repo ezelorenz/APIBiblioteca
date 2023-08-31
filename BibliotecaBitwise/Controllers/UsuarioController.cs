@@ -12,12 +12,12 @@ namespace BibliotecaBitwise.Controllers
     [ApiController]
     public class UsuarioController : ControllerBase
     {
-        private readonly IGenericRepository<Usuario> _repository;
+        private readonly IGenericRepository<AppUsuario> _repository;
         private readonly IUsuarioRepository _userRepository;
         private readonly IMapper _mapper;
         protected RespuestaApi _respuesta;
 
-        public UsuarioController(IGenericRepository<Usuario> repository,
+        public UsuarioController(IGenericRepository<AppUsuario> repository,
                                 IUsuarioRepository userRepository,
                                 IMapper mapper)
         {
@@ -33,6 +33,17 @@ namespace BibliotecaBitwise.Controllers
             var usuarios = await _repository.ObtenerTodos();
             var usuariosDto = _mapper.Map<IEnumerable<UsuarioDto>>(usuarios);
             return Ok(usuariosDto);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UsuarioDto>> Obtener(string id)
+        {
+            var usuario = await _userRepository.GetUsuario(id);
+            if (usuario == null)
+                return NotFound();
+
+            var usuarioDto = _mapper.Map<UsuarioDto>(usuario);
+            return Ok(usuarioDto);
         }
 
         [HttpPost("registro")]
